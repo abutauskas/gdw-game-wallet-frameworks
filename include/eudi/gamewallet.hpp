@@ -735,6 +735,12 @@ struct Key {
         key.d = j.getString("d");
         return key;
     }
+
+    // True if both keys carry the same secret material (prototype check).
+    bool sameSecret(const Key& other) const {
+        if (alg == "HS256") return k == other.k;
+        return !d.empty() && d == other.d;
+    }
 };
 
 // A Signer turns bytes into a signature. Swap Hs256Signer for a real
@@ -1053,7 +1059,7 @@ public:
         const Json* cnf = parsed.payload.find("cnf");
         if (cnf && cnf->isObject()) {
             Key cnfKey = Key::fromJson(*cnf);
-            if (cnfKey.k != key_.k && cnfKey.d != key_.d) throw GwError(errors::KbInvalid);
+            if (!cnfKey.sameSecret(key_)) throw GwError(errors::KbInvalid);
         }
 
         Json kb = Json::object();
