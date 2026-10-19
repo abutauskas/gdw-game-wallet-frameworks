@@ -1,0 +1,24 @@
+[package]
+name = "eudi-game-wallet"
+version = "0.1.0"
+edition = "2021"
+description = "Game Digital Wallet (GDW) token framework for Bevy / Rust game servers (prototype)."
+license = "CC-BY-4.0"
+repository = "https://github.com/eu-digital-identity-wallet/eudi-doc-architecture-and-reference-framework"
+publish = false
+
+# The core GDW implementation is dependency-free: SHA-256 and HMAC-SHA256 are
+# implemented in `crypto.rs` so the crate builds offline and embeds cleanly in a
+# Bevy project. ES256 (the production algorithm) is opt-in and pulls in the
+# `p256` crate only when the feature is enabled.
+[features]
+default = []
+es256 = ["dep:p256", "dep:rand_core"]
+
+[dependencies]
+p256 = { version = "0.13", features = ["ecdsa"], optional = true }
+rand_core = { version = "0.6", optional = true }
+
+[[example]]
+name = "basic_flow"
+path = "examples/basic_flow.rs"

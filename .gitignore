@@ -11,6 +11,9 @@ cpp/build/
 gdscript/.godot/
 *.uid
 
+# Rust
+rust/target/
+
 # Python
 __pycache__/
 *.pyc
