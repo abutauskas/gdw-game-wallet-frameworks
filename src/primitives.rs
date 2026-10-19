@@ -44,6 +44,10 @@ pub fn b64url_decode(text: &str) -> GdwResult<Vec<u8>> {
     }
 
     let bytes = text.as_bytes();
+    // A base64 group is 4 characters; a leftover of 1 character is invalid.
+    if bytes.len() % 4 == 1 {
+        return Err(GdwError::Malformed);
+    }
     let mut out = Vec::with_capacity(bytes.len() / 4 * 3);
     let mut buffer = 0u32;
     let mut bits = 0u32;
@@ -212,6 +216,13 @@ mod tests {
             assert!(!encoded.contains('='));
             assert_eq!(b64url_decode(&encoded).unwrap(), data);
         }
+        // A leftover of one character (length % 4 == 1) is not valid base64url.
+        assert!(b64url_decode("AAAAA").is_err());
+        assert!(b64url_decode("A").is_err());
+        // Characters outside the base64url alphabet are rejected.
+        assert!(b64url_decode("AA+A").is_err());
+        assert!(b64url_decode("AA/A").is_err());
+        assert!(b64url_decode("AA==").is_err());
     }
 
     #[test]

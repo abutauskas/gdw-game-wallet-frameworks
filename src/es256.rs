@@ -55,6 +55,11 @@ impl EcdsaP256Signer {
             (Some(x), Some(y)) => {
                 let x = b64url_decode(x)?;
                 let y = b64url_decode(y)?;
+                // A P-256 coordinate is exactly 32 bytes; reject anything else
+                // rather than panicking in GenericArray::from_slice.
+                if x.len() != 32 || y.len() != 32 {
+                    return Err(GdwError::Malformed);
+                }
                 let point = p256::EncodedPoint::from_affine_coordinates(
                     p256::elliptic_curve::generic_array::GenericArray::from_slice(&x),
                     p256::elliptic_curve::generic_array::GenericArray::from_slice(&y),
