@@ -1,0 +1,16 @@
+# Build artifacts for the Game Digital Wallet frameworks.
+
+# C++
+cpp/build/
+
+# .NET
+**/bin/
+**/obj/
+
+# Godot
+gdscript/.godot/
+*.uid
+
+# Python
+__pycache__/
+*.pyc
