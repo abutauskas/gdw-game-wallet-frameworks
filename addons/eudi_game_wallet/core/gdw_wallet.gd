@@ -74,7 +74,7 @@ func present(credential: String, requested_claims: PackedStringArray,
 	var cnf: Variant = parsed.payload.get("cnf", null)
 	if typeof(cnf) == TYPE_DICTIONARY:
 		var cnf_key := Key.from_dict(cnf)
-		if not cnf_key.same_secret(_key):
+		if cnf_key == null or not cnf_key.same_secret(_key):
 			return ""  # ERR_KB_INVALID
 
 	var kb := {

@@ -30,7 +30,7 @@ godot --headless --path . --import     # first time only: register global classe
 godot --headless --path . --script res://tests/run_tests.gd
 ```
 
-Expected: `55/55 checks passed`.
+Expected: `64/64 checks passed`.
 
 > Use an absolute path to the Godot binary if it is not on `PATH`, e.g.
 > `~/godot/Godot_v4.5-stable_linux.x86_64 --headless ...`.

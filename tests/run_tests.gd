@@ -55,6 +55,7 @@ func _init() -> void:
 	_test_hs256(vectors)
 	_test_issue_flow(vectors)
 	_test_verify_flow(vectors)
+	_test_type_confusion(vectors)
 	_test_negative_cases(vectors)
 	# ES256 is intentionally not tested: GDScript cannot sign it natively.
 
@@ -128,6 +129,73 @@ func _test_verify_flow(vectors: Dictionary) -> void:
 	if not result["ok"]:
 		print("    errors: ", result["errors"])
 	_check_equal(Util.canonical(result["claims"]), Util.canonical(flow["expected"]["claims"]), "derived claims")
+
+
+func _seg(text: String) -> String:
+	return Util.base64url_encode(text.to_utf8_buffer())
+
+
+func _test_type_confusion(vectors: Dictionary) -> void:
+	# Regression: a non-string/non-int JSON field in the header or payload used
+	# to abort _verify on a runtime type error, which verify() then reported as
+	# ok=true. Every case here must fail closed.
+	print("type confusion")
+	var flow: Dictionary = vectors["verify_flow"]
+	var request: Dictionary = flow["request"]
+	var parts := (flow["presentation"] as String).split("~")
+	var kb_jwt: String = parts[parts.size() - 1]
+	var jwt_parts := (parts[0] as String).split(".")
+	var raw_header := Util.base64url_decode(jwt_parts[0]).get_string_from_utf8()
+	var raw_payload := Util.base64url_decode(jwt_parts[1]).get_string_from_utf8()
+
+	# Each entry is [side, key, literal JSON value to inject]. The signature is
+	# intentionally left stale: a strict verifier must reject before (or at) the
+	# type check regardless.
+	var cases := [
+		["header", "typ", "1"],
+		["header", "typ", "true"],
+		["header", "alg", "1"],
+		["payload", "iss", "5"],
+		["payload", "iss", "null"],
+		["payload", "exp", "1.5"],
+		["payload", "exp", "null"],
+		["payload", "vct", "5"],
+		["payload", "_sd_alg", "5"],
+	]
+	for case in cases:
+		var side: String = case[0]
+		var key: String = case[1]
+		var value_json: String = case[2]
+		var header_text := _inject(raw_header, key, value_json) if side == "header" else raw_header
+		var payload_text := _inject(raw_payload, key, value_json) if side == "payload" else raw_payload
+		var signing_input := _seg(header_text) + "." + _seg(payload_text)
+		# Sign with the trusted issuer key so tampered fields reach the checks
+		# that follow signature verification (header typ/alg are checked before
+		# it, so a stale signature already exercises those).
+		var signer := Key.from_dict(flow["trust"].values()[0])
+		var jwt := signing_input + "." + signer.sign(signing_input)
+		var rebuilt := jwt + "~"
+		for i in range(1, parts.size() - 1):
+			rebuilt += parts[i] + "~"
+		rebuilt += kb_jwt
+		var verifier := Verifier.new(request["aud"])
+		for issuer in flow["trust"]:
+			verifier.trust(issuer, Key.from_dict(flow["trust"][issuer]))
+		var result := verifier.verify(request, rebuilt, int(flow["now"]))
+		_check(not result["ok"], "tampered JWT (%s.%s=%s) must not verify" % [side, key, value_json])
+
+
+## Replace the value of `key` in a raw JSON object text with a literal value.
+func _inject(raw: String, key: String, value_json: String) -> String:
+	var needle := "\"" + key + "\":"
+	var at := raw.find(needle)
+	if at < 0:
+		return raw
+	var start := at + needle.length()
+	var end := start
+	while end < raw.length() and raw[end] != "," and raw[end] != "}":
+		end += 1
+	return raw.substr(0, start) + value_json + raw.substr(end)
 
 
 func _test_negative_cases(vectors: Dictionary) -> void:

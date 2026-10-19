@@ -48,14 +48,27 @@ func to_dict() -> Dictionary:
 	return obj
 
 
+## Build a key from a JSON object. Returns ``null`` if any present field has a
+## non-string type, so callers fail closed instead of aborting on a typed
+## assignment (which would return a default value and bypass a check).
 static func from_dict(j: Dictionary) -> GdwKey:
 	var key := GdwKey.new()
-	key.alg = j.get("alg", "HS256")
-	key.k = j.get("k", "")
-	key.crv = j.get("crv", "")
-	key.x = j.get("x", "")
-	key.y = j.get("y", "")
-	key.d = j.get("d", "")
+	var alg_val: Variant = j.get("alg")
+	if alg_val == null:
+		key.alg = "HS256"
+	elif typeof(alg_val) == TYPE_STRING and alg_val != "":
+		key.alg = alg_val
+	elif typeof(alg_val) == TYPE_STRING:
+		key.alg = "HS256"
+	else:
+		return null
+	for field in ["k", "crv", "x", "y", "d"]:
+		var value: Variant = j.get(field)
+		if value == null:
+			continue
+		if typeof(value) != TYPE_STRING:
+			return null
+		key.set(field, value)
 	return key
 
 
