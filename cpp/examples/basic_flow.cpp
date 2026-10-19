@@ -7,6 +7,7 @@
 #include "eudi/gamewallet.hpp"
 
 #include <iostream>
+#include <vector>
 
 using namespace eudi::gw;
 
@@ -32,7 +33,11 @@ int main() {
 
     std::cout << "credential bytes: " << credential.size() << "\n";
     std::cout << "stored claims:    ";
-    for (const std::string& name : Wallet(playerKey).claimsOf(credential)) std::cout << name << " ";
+    const std::vector<std::string> storedClaims = Wallet(playerKey).claimsOf(credential);
+    for (std::size_t i = 0; i < storedClaims.size(); ++i) {
+        if (i > 0) std::cout << " ";
+        std::cout << storedClaims[i];
+    }
     std::cout << "\n\n";
 
     // 3. The player's game wallet stores the credential.

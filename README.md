@@ -8,9 +8,9 @@ backend can all speak it:
 
 | Language | Engine / runtime | Folder | Tests |
 | --- | --- | --- | --- |
-| C++17 | Unreal Engine, any C++ game server | [`cpp/`](cpp/) | `61/61` |
+| C++17 | Unreal Engine, any C++ game server | [`cpp/`](cpp/) | `62/62` |
 | C# (.NET 10) | Unity, Godot (.NET), backend | [`csharp/`](csharp/) | `61/61` |
-| GDScript | Godot 4.x (no native deps) | [`gdscript/`](gdscript/) | `55/55` |
+| GDScript | Godot 4.x (no native deps) | [`gdscript/`](gdscript/) | `64/64` |
 | Rust | Bevy, Rust game servers, `wasm32` | [`rust/`](rust/) | `58/58` (`61/61` with ES256) |
 | Python | Panda3D, PyGame, Ursina, servers | [`python/`](python/) | `58/58` (`61/61` with ES256) |
 | Lua | Defold, LÖVE (LuaJIT), Lua 5.1+ | [`lua/`](lua/) | `55/55` |
@@ -137,7 +137,7 @@ cd lua      && lua examples/basic_flow.lua
 
 ```
 credential bytes: 709
-stored claims:    nickname, age_over_18, country
+stored claims:    nickname age_over_18 country
 presentation bytes: 914
 verified: age_over_18 = true
 ```

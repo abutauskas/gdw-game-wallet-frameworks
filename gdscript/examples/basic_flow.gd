@@ -37,7 +37,7 @@ func _init() -> void:
 		"exp": Core.now() + 30 * 24 * 3600,
 	})
 	print("credential bytes: ", credential.length())
-	print("stored claims:    ", ", ".join(Wallet.new(player_key).claims_of(credential)))
+	print("stored claims:    ", " ".join(Wallet.new(player_key).claims_of(credential)))
 	print("")
 
 	# 3. The player's game wallet stores the credential.

@@ -171,6 +171,35 @@ static void testNegativeCases(const Json& vectors) {
     }
 }
 
+static void testPresentCnfMismatch(const Json& vectors) {
+    std::cout << "present rejects a mismatched holder key\n";
+    const Json* flow = vectors.find("issue_flow");
+    if (!flow) return;
+    Key issuerKey = keyFromJson(*flow->find("issuer_key"));
+    Key holderKey = keyFromJson(*flow->find("holder_key"));
+    Issuer issuer(flow->getString("iss"), issuerKey);
+
+    IssueOptions options;
+    options.vct = flow->getString("vct");
+    options.claims = *flow->find("claims");
+    options.disclosable = {};
+    for (const Json& name : flow->find("disclosable")->arrayValue) options.disclosable.push_back(name.stringValue);
+    options.iat = flow->getInt("iat");
+    options.exp = flow->getInt("exp");
+    options.sub = flow->getString("sub");
+    options.holderKey = holderKey;
+    for (const Json& salt : flow->find("salts")->arrayValue) options.salts.push_back(salt.stringValue);
+    std::string credential = issuer.issue(options);
+
+    Wallet wrongWallet(Key::hs256("a different holder secret"));
+    try {
+        wrongWallet.present(credential, {"age_over_18"}, "aud", "nonce", flow->getInt("iat"));
+        check(false, "present throws KbInvalid for a mismatched holder key");
+    } catch (const GwError& error) {
+        check(error.code == errors::KbInvalid, "present throws ERR_KB_INVALID for a mismatched holder key");
+    }
+}
+
 #if defined(EUDI_GW_HAS_OPENSSL)
 // End-to-end ES256 (real asymmetric crypto) using a freshly generated P-256 key.
 #include <openssl/bn.h>
@@ -246,6 +275,7 @@ int main(int argc, char** argv) {
     testIssueFlow(vectors);
     testVerifyFlow(vectors);
     testNegativeCases(vectors);
+    testPresentCnfMismatch(vectors);
 #if defined(EUDI_GW_HAS_OPENSSL)
     testEs256RoundTrip();
 #endif

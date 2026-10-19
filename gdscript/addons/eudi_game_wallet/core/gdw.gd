@@ -55,7 +55,7 @@ static func parse_credential(credential: String) -> Dictionary:
 	if parts.size() < 2:
 		return {}
 	var token := decode_token(parts[0])
-	if token.is_empty() or token.header.get("typ", "") != "gw+jwt":
+	if token.is_empty() or Util.json_get(token.header, "typ") != "gw+jwt":
 		return {}
 	var disclosures := PackedStringArray()
 	for i in range(1, parts.size()):

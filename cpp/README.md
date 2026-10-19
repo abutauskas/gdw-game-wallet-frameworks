@@ -32,8 +32,8 @@ cd build && ctest --output-on-failure
 ./wallet_tests ../test-vectors/vectors.json
 ```
 
-Expected: `61/61 checks passed` (the ES256 round-trip runs only when OpenSSL was
-found; without it you get `55/55`).
+Expected: `62/62 checks passed` (the ES256 round-trip runs only when OpenSSL was
+found; without it you get `59/59`).
 
 Requires a C++17 compiler. OpenSSL is optional:
 

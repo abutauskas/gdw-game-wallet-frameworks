@@ -29,9 +29,8 @@ options.Disclosable.Add("country");
 string credential = ageIssuer.Issue(options);
 
 Console.WriteLine($"credential bytes: {credential.Length}");
-Console.Write("stored claims:    ");
-foreach (var name in new Wallet(playerKey).ClaimsOf(credential)) Console.Write(name + " ");
-Console.WriteLine("\n");
+Console.WriteLine($"stored claims:    {string.Join(" ", new Wallet(playerKey).ClaimsOf(credential))}");
+Console.WriteLine();
 
 // 3. The player's game wallet stores the credential.
 var wallet = new Wallet(playerKey);

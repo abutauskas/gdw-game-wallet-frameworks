@@ -34,7 +34,7 @@ local credential = age_issuer:issue({
 	exp = core.now() + 30 * 24 * 3600,
 })
 print("credential bytes: " .. #credential)
-print("stored claims:    " .. table.concat(core.new_wallet(player_key):claims_of(credential), ", "))
+print("stored claims:    " .. table.concat(core.new_wallet(player_key):claims_of(credential), " "))
 print("")
 
 -- 3. The player's game wallet stores the credential.

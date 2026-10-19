@@ -77,7 +77,7 @@ lua examples/basic_flow.lua
 
 ```
 credential bytes: 709
-stored claims:    nickname, age_over_18, country
+stored claims:    nickname age_over_18 country
 presentation bytes: 914
 verified: age_over_18 = true
 ```
