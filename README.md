@@ -117,8 +117,16 @@ access is not:
 | Engine | Device camera (photo/video) | How |
 | --- | --- | --- |
 | Unity | ✅ Full | `WebCamTexture`, plus AR Foundation `XRCameraSubsystem`; Android/iOS/WebGL with runtime permission APIs. |
-| Godot 4 | ✅ Full | `CameraServer` / `CameraFeed`; implemented on Linux, macOS, Android, iOS (iOS export needs `modules/camera`). |
 | Unreal Engine | ⚠️ Limited | Desktop webcam via Media Framework (`EnumerateWebcamCaptureDevices`); reliable mobile capture needs a plugin (e.g. DirectCamera). |
+| Godot 4 | ✅ Full | `CameraServer` / `CameraFeed`; implemented on Linux, macOS, Android, iOS (iOS export needs `modules/camera`). |
+| Godot (.NET) | ✅ Full | Same engine core — the C# bindings expose the identical `CameraServer` / `CameraFeed`. |
+| Defold | ✅ Full | Official [`extension-camera`](https://defold.com/extension-camera/) native extension; macOS, iOS, Android (`camera.start_capture` / `camera.get_frame`). |
+| LÖVE (love2d) | ❌ Restricted | No built-in camera (only `love.audio` mic recording); capture needs a custom C/C++ module (ESCAPI/OpenCV), effectively desktop-only. |
+| Bevy / Amethyst | ⚠️ Limited | No built-in support; via the `nokhwa` crate (`bevy_webcam` / `bevy_nokhwa`) on native, or `getUserMedia` on `wasm32`. Amethyst is unmaintained. |
+| Cocos2d-x | ⚠️ Limited | No cross-platform camera API; uses a native `ImagePicker`/`Intent` on Android and a UIKit picker on iOS, with custom JSB binding. |
+| Construct 3 | ✅ Full | Built-in **User Media** object (camera + mic, snapshot to Sprite/Tiled Background) on top of `getUserMedia`. |
+| GDevelop | ✅ Full | Web/`getUserMedia` based; camera used by face-capture / tracking extensions. |
+| PlayCanvas / Babylon.js / Three.js | ✅ Full | Web engines: `navigator.mediaDevices.getUserMedia` → a video texture (`Babylon.VideoTexture.CreateFromWebCam`, PlayCanvas video-texture tutorial, Three.js `VideoTexture`). |
 | Roblox (Luau) | ❌ Restricted | No general device-camera API for game code. `PlayerViewService:GetDeviceCameraCFrame` is **mobile-only** and only when the user opts in; webcam use is limited to avatar facial animation. Not usable for QR scanning. |
 
 **Consequence:** the credentials themselves are engine-agnostic (the same
