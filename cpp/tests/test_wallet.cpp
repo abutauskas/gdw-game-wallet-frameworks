@@ -63,6 +63,18 @@ static void testCanonicalJson(const Json& vectors) {
         // Re-parsing the canonical form must yield the same canonical form.
         checkEqual(Json::parse(expected).canonical(), expected, name + " (round trip)");
     }
+
+    // Integers are limited to +/-(2^53 - 1); non-canonical forms are rejected.
+    check(Json::parse("9007199254740991").canonical() == "9007199254740991", "accepts 2^53-1");
+    for (const char* bad : {"9007199254740992", "-9007199254740992", "-0", "01", "9223372036854775807"}) {
+        bool threw = false;
+        try {
+            Json::parse(bad);
+        } catch (...) {
+            threw = true;
+        }
+        check(threw, std::string("rejects ") + bad);
+    }
 }
 
 static void testDisclosures(const Json& vectors) {

@@ -182,9 +182,68 @@ Console.WriteLine("ES256 round trip");
     }
 }
 
+// ---- ES256 verify-only (public) key ---------------------------------------
+Console.WriteLine("ES256 verify-only key");
+{
+    var issuerKey = GenerateEs256Key(out var holderKey);
+    var issuer = new Issuer("https://issuer.example/es256-pub", issuerKey);
+    var options = new IssueOptions
+    {
+        Vct = "urn:eudi:game:attestation:guild-member",
+        Iat = Verifier.Now(),
+        Exp = Verifier.Now() + 3600,
+        HolderKey = holderKey,
+    };
+    options.Claims["guild"] = GdwJson.Str("Night Owls");
+    string credential = issuer.Issue(options);
+
+    // A verifier must be able to trust the issuer's *public* key (no D).
+    var publicKey = new GdwKey
+    {
+        Alg = "ES256",
+        Crv = "P-256",
+        X = issuerKey.X,
+        Y = issuerKey.Y,
+    };
+    // Creating a signer over a public-only key must not throw.
+    ISigner publicSigner = SignerFactory.Create(publicKey);
+    Check(!publicSigner.Verify("x", "AAAA"), "public-only signer verifies without throwing");
+
+    var wallet = new Wallet(holderKey);
+    wallet.Store(credential);
+    var verifier = new Verifier("game-server-eu-1");
+    verifier.Trust("https://issuer.example/es256-pub", publicKey);
+    var request = verifier.CreateRequest(
+        new[] { "urn:eudi:game:attestation:guild-member" }, new[] { "guild" });
+    string presentation = wallet.Present(
+        credential, new[] { "guild" },
+        request.Get("aud")!.AsString(), request.Get("nonce")!.AsString(), Verifier.Now());
+    var result = verifier.Verify(request, presentation, Verifier.Now());
+    Check(result.Ok, "verification with a public-only issuer key succeeds");
+}
+
+// ---- Strict JSON parsing ---------------------------------------------------
+Console.WriteLine("strict JSON parsing");
+{
+    Check(Throws(() => GdwJson.Parse("-0")), "rejects -0");
+    Check(Throws(() => GdwJson.Parse("00")), "rejects leading zeros");
+    Check(Throws(() => GdwJson.Parse("9007199254740992")), "rejects 2^53");
+    Check(Throws(() => GdwJson.Parse("-9007199254740992")), "rejects -2^53");
+    Check(Throws(() => GdwJson.Parse("1 2")), "rejects trailing content");
+    Check(Throws(() => GdwJson.Parse("{} {}")), "rejects trailing object");
+    CheckEqual(GdwJson.Parse("9007199254740991").Canonical(), "9007199254740991", "accepts 2^53-1");
+}
+
 Console.WriteLine();
 Console.WriteLine($"{checks - failures}/{checks} checks passed");
 return failures == 0 ? 0 : 1;
+
+static bool Throws(Action action)
+{
+    try { action(); return false; }
+    catch (GdwException) { return true; }
+    catch (System.Text.Json.JsonException) { return true; }
+}
 
 // Generate a fresh P-256 key pair as GDW keys.
 static GdwKey GenerateEs256Key(out GdwKey holder)

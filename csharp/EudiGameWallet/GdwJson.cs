@@ -6,6 +6,7 @@
 //
 // SPDX-License-Identifier: CC-BY-4.0
 
+using System.Buffers;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
@@ -143,6 +144,8 @@ public sealed class GdwJson
         var reader = new Utf8JsonReader(new ReadOnlySpan<byte>(Encoding.UTF8.GetBytes(text)));
         if (!reader.Read()) throw new GdwException(GdwErrors.Malformed);
         var value = ParseValue(ref reader);
+        // Reject trailing content: a single JSON value must fill the document.
+        if (reader.Read()) throw new GdwException(GdwErrors.Malformed);
         return value;
     }
 
@@ -154,8 +157,20 @@ public sealed class GdwJson
             case JsonTokenType.True: return Bool(true);
             case JsonTokenType.False: return Bool(false);
             case JsonTokenType.Number:
-                if (reader.TryGetInt64(out long i)) return Int(i);
-                throw new GdwException(GdwErrors.Malformed); // floats forbidden
+                if (!reader.TryGetInt64(out long i))
+                    throw new GdwException(GdwErrors.Malformed); // floats forbidden
+                // Reject non-canonical integer forms ("-0", leading zeros).
+                var raw = reader.HasValueSequence
+                    ? Encoding.UTF8.GetString(reader.ValueSequence.ToArray())
+                    : Encoding.UTF8.GetString(reader.ValueSpan);
+                var body = raw.StartsWith('-') ? raw.Substring(1) : raw;
+                if (raw == "-0" || (body.Length > 1 && body[0] == '0'))
+                    throw new GdwException(GdwErrors.Malformed);
+                // SPEC.md §2.2: the limit is +/- (2^53 - 1).
+                const long MaxSafe = 9007199254740991L;
+                if (i < -MaxSafe || i > MaxSafe)
+                    throw new GdwException(GdwErrors.Malformed);
+                return Int(i);
             case JsonTokenType.String: return Str(reader.GetString() ?? "");
             case JsonTokenType.StartArray:
             {

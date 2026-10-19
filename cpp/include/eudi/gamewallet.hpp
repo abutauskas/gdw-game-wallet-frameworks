@@ -331,9 +331,19 @@ private:
             throw std::runtime_error("ERR_MALFORMED: floating point numbers are not allowed");
         }
         std::string digits = t.substr(start, p - start);
+        // Reject non-canonical forms ("-0", leading zeros).
+        std::string body = (digits[0] == '-') ? digits.substr(1) : digits;
+        if (digits == "-0" || (body.size() > 1 && body[0] == '0')) {
+            throw std::runtime_error("ERR_MALFORMED: non-canonical integer");
+        }
         errno = 0;
         long long value = std::strtoll(digits.c_str(), nullptr, 10);
         if (errno != 0) throw std::runtime_error("ERR_MALFORMED: integer out of range");
+        // SPEC.md §2.2: integers are limited to +/- (2^53 - 1).
+        constexpr long long maxSafe = 9007199254740991LL;
+        if (value < -maxSafe || value > maxSafe) {
+            throw std::runtime_error("ERR_MALFORMED: integer out of range");
+        }
         return Json::integer(static_cast<int64_t>(value));
     }
 };

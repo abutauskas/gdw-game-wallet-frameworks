@@ -259,9 +259,13 @@ impl Parser<'_> {
         if !canonical_int {
             return Err(GdwError::Malformed);
         }
-        text.parse::<i64>()
-            .map(Json::Int)
-            .map_err(|_| GdwError::Malformed)
+        let value = text.parse::<i64>().map_err(|_| GdwError::Malformed)?;
+        // SPEC.md §2.2: integers are limited to the JSON-safe range.
+        const MAX_SAFE: i64 = 9_007_199_254_740_991; // 2^53 - 1
+        if value < -MAX_SAFE || value > MAX_SAFE {
+            return Err(GdwError::Malformed);
+        }
+        Ok(Json::Int(value))
     }
 
     fn parse_string(&mut self) -> GdwResult<String> {
@@ -425,6 +429,14 @@ mod tests {
             Json::parse("9007199254740991").unwrap().canonical(),
             "9007199254740991"
         );
+        assert_eq!(
+            Json::parse("-9007199254740991").unwrap().canonical(),
+            "-9007199254740991"
+        );
+        // SPEC.md §2.2: the limit is +/- (2^53 - 1).
+        assert!(Json::parse("9007199254740992").is_err());
+        assert!(Json::parse("-9007199254740992").is_err());
+        assert!(Json::parse("9223372036854775807").is_err());
     }
 
     #[test]
