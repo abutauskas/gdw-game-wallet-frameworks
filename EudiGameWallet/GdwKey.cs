@@ -103,23 +103,30 @@ public sealed class Hs256Signer : ISigner
 public sealed class EcdsaP256Signer : ISigner
 {
     private readonly ECDsa _ec;
+    private readonly bool _canSign;
 
     public EcdsaP256Signer(GdwKey key)
     {
         if (key.Alg != "ES256") throw new GdwException(GdwErrors.Malformed);
-        if (string.IsNullOrEmpty(key.D) || string.IsNullOrEmpty(key.X) || string.IsNullOrEmpty(key.Y))
+        if (string.IsNullOrEmpty(key.X) || string.IsNullOrEmpty(key.Y))
             throw new GdwException(GdwErrors.Malformed);
 
         var p = new ECParameters
         {
             Curve = ECCurve.NamedCurves.nistP256,
-            D = GdwPrimitives.Base64UrlDecode(key.D),
             Q = new ECPoint
             {
                 X = GdwPrimitives.Base64UrlDecode(key.X),
                 Y = GdwPrimitives.Base64UrlDecode(key.Y),
             },
         };
+        // A key with a private scalar can sign; a public-only key (e.g. an
+        // issuer trust anchor, or a spec-compliant cnf) is verify-only.
+        if (!string.IsNullOrEmpty(key.D))
+        {
+            p.D = GdwPrimitives.Base64UrlDecode(key.D);
+            _canSign = true;
+        }
         _ec = ECDsa.Create(p);
     }
 
@@ -127,6 +134,7 @@ public sealed class EcdsaP256Signer : ISigner
 
     public string Sign(string signingInput)
     {
+        if (!_canSign) throw new GdwException(GdwErrors.Malformed);
         // ES256 signatures are raw r||s (64 bytes), not ASN.1/DER.
         byte[] raw = _ec.SignData(
             System.Text.Encoding.UTF8.GetBytes(signingInput),

@@ -33,7 +33,7 @@ csharp/
 dotnet run -c Release --project Tests/EudiGameWallet.Tests -- ../test-vectors/vectors.json
 ```
 
-Expected: `61/61 checks passed` (includes an ES256 round-trip using a freshly
+Expected: `70/70 checks passed` (includes an ES256 round-trip using a freshly
 generated P-256 key — no extra packages required).
 
 ## Run the example
