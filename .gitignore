@@ -21,3 +21,6 @@ __pycache__/
 # Lua
 *.luac
 lua/**/__pycache__/
+
+# JavaScript / TypeScript
+javascript/node_modules/

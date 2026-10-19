@@ -1,0 +1,41 @@
+{
+  "name": "@eudi/gdw-game-wallet",
+  "version": "0.1.0",
+  "description": "Game Digital Wallet (GDW) reference framework — SD-JWT-style credentials for game engines and services. Byte-for-byte compatible with the C++, C#, GDScript, Rust, Python and Lua ports.",
+  "keywords": [
+    "eudi",
+    "gdw",
+    "sd-jwt",
+    "verifiable-credentials",
+    "age-assurance",
+    "game"
+  ],
+  "license": "CC-BY-4.0",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "require": "./src/index.js",
+      "default": "./src/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "types",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node test/run_tests.js && node test/test_units.js",
+    "example": "node examples/basic_flow.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^5.6.0"
+  }
+}
