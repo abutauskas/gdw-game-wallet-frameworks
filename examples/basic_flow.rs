@@ -35,11 +35,11 @@ fn main() {
 
     println!("credential bytes: {}", credential.len());
     let reader = Wallet::new(player_key.clone()).unwrap();
-    print!("stored claims:    ");
-    for name in reader.claims_of(&credential).unwrap() {
-        print!("{name} ");
-    }
-    println!("\n");
+    println!(
+        "stored claims:    {}",
+        reader.claims_of(&credential).unwrap().join(" ")
+    );
+    println!();
 
     // 3. The player's game wallet stores the credential.
     let mut wallet = Wallet::new(player_key.clone()).unwrap();
