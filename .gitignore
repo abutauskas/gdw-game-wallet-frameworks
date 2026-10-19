@@ -17,3 +17,7 @@ rust/target/
 # Python
 __pycache__/
 *.pyc
+
+# Lua
+*.luac
+lua/**/__pycache__/
