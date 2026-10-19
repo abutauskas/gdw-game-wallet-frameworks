@@ -1,0 +1,23 @@
+; Godot project for the EudiGameWallet GDScript framework and its tests.
+; Run the conformance tests headless from this directory:
+;
+;   godot --headless --path . --script res://tests/run_tests.gd
+;
+; SPDX-License-Identifier: CC-BY-4.0
+
+config_version=5
+
+[application]
+
+config/name="EudiGameWallet"
+config/description="Prototype game digital wallet (GDW) token framework."
+run/main_scene=""
+config/features=PackedStringArray("4.5")
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/eudi_game_wallet/plugin.cfg")
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
