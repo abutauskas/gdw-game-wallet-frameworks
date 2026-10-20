@@ -1,20 +1,16 @@
 # Convenience targets for the Game Digital Wallet (GDW) lua framework.
-# See SPEC.md for the wire format and ../test-vectors for the shared vectors.
+# The language lives at this branch's root; SPEC.md and test-vectors/ are shared.
 #
 # SPDX-License-Identifier: CC-BY-4.0
 
-.PHONY: help test example clean
+.PHONY: help test clean
 
 help:
-	@echo "make test     run the lua conformance suite"
-	@echo "make example  run the end-to-end lua example"
-	@echo "make clean    remove build artifacts"
+	@echo "make test   run the lua conformance suite"
+	@echo "make clean  remove local build artifacts"
 
 test:
-	cd lua && lua tests/run_tests.lua && lua tests/test_units.lua
-
-example:
-	@echo "see the lua README for the run command"
+	lua tests/run_tests.lua && lua tests/test_units.lua
 
 clean:
 	rm -rf build
