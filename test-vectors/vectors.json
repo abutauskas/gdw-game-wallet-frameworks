@@ -1,0 +1,532 @@
+{
+  "version": "0.1",
+  "description": "Test vectors for the Game Digital Wallet (GDW) token format.",
+  "canonical_json": [
+    {
+      "name": "sorted-keys-nested",
+      "input": {
+        "b": 2,
+        "a": 1,
+        "c": {
+          "z": [
+            true,
+            null,
+            "x"
+          ],
+          "y": "ü"
+        }
+      },
+      "canonical": "{\"a\":1,\"b\":2,\"c\":{\"y\":\"ü\",\"z\":[true,null,\"x\"]}}"
+    },
+    {
+      "name": "escapes",
+      "input": {
+        "msg": "line1\nline2\t\"quoted\" \\ path"
+      },
+      "canonical": "{\"msg\":\"line1\\nline2\\t\\\"quoted\\\" \\\\ path\"}"
+    },
+    {
+      "name": "control-characters",
+      "input": {
+        "msg": "bell\u0007done"
+      },
+      "canonical": "{\"msg\":\"bell\\u0007done\"}"
+    },
+    {
+      "name": "negative-integers",
+      "input": {
+        "min": -9007199254740991,
+        "zero": 0
+      },
+      "canonical": "{\"min\":-9007199254740991,\"zero\":0}"
+    }
+  ],
+  "disclosures": [
+    {
+      "name": "bool-claim",
+      "salt_b64": "AAECAwQFBgcICQoLDA0ODw",
+      "claim_name": "age_over_18",
+      "claim_value": true,
+      "segment": "WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd",
+      "digest": "zhurxLJSJKI_XNO-e_L644W0SwqsTD5LDd3yPwd4ZWs"
+    },
+    {
+      "name": "string-claim",
+      "salt_b64": "EBESExQVFhcYGRobHB0eHw",
+      "claim_name": "display_name",
+      "claim_value": "Ada Lovelace",
+      "segment": "WyJFQkVTRXhRVkZoY1lHUm9iSEIwZUh3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0",
+      "digest": "8F2cTA96Kf5kpd5WVuXIQZm4Bz2KZJrT3kVSGZtlkQw"
+    },
+    {
+      "name": "nested-claim",
+      "salt_b64": "ICEiIyQlJicoKSorLC0uLw",
+      "claim_name": "guild",
+      "claim_value": {
+        "name": "Night Owls",
+        "rank": 3
+      },
+      "segment": "WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZ3VpbGQiLHsibmFtZSI6Ik5pZ2h0IE93bHMiLCJyYW5rIjozfV0",
+      "digest": "8gQweCV9NLzvW15zMYfOiTksCR79__BYoJ_Ri60vu2E"
+    }
+  ],
+  "hs256": {
+    "key": {
+      "alg": "HS256",
+      "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+    },
+    "payload": {
+      "exp": 1702592000,
+      "iat": 1700000000,
+      "iss": "https://issuer.example/age-service",
+      "vct": "urn:eudi:game:attestation:age-over-18"
+    },
+    "signing_input": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJleHAiOjE3MDI1OTIwMDAsImlhdCI6MTcwMDAwMDAwMCwiaXNzIjoiaHR0cHM6Ly9pc3N1ZXIuZXhhbXBsZS9hZ2Utc2VydmljZSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ",
+    "signature": "CU5kv3q2SNrWriCa7tn8K-lJU_gYuL1o8zEwkwmKr_A",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJleHAiOjE3MDI1OTIwMDAsImlhdCI6MTcwMDAwMDAwMCwiaXNzIjoiaHR0cHM6Ly9pc3N1ZXIuZXhhbXBsZS9hZ2Utc2VydmljZSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.CU5kv3q2SNrWriCa7tn8K-lJU_gYuL1o8zEwkwmKr_A"
+  },
+  "issue_flow": {
+    "issuer_key": {
+      "alg": "HS256",
+      "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+    },
+    "holder_key": {
+      "alg": "HS256",
+      "k": "ZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1-f4CBgoM"
+    },
+    "iss": "https://issuer.example/age-service",
+    "vct": "urn:eudi:game:attestation:age-over-18",
+    "sub": "holder-0001",
+    "iat": 1700000000,
+    "exp": 1702592000,
+    "claims": {
+      "age_over_18": true,
+      "age_over_21": false,
+      "display_name": "Ada Lovelace",
+      "country": "NL"
+    },
+    "disclosable": [
+      "age_over_18",
+      "age_over_21",
+      "display_name"
+    ],
+    "salts": [
+      "AAECAwQFBgcICQoLDA0ODw",
+      "EBESExQVFhcYGRobHB0eHw",
+      "ICEiIyQlJicoKSorLC0uLw"
+    ],
+    "credential": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJFQkVTRXhRVkZoY1lHUm9iSEIwZUh3IiwiYWdlX292ZXJfMjEiLGZhbHNlXQ~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~",
+    "expected_payload": {
+      "_sd": [
+        "zhurxLJSJKI_XNO-e_L644W0SwqsTD5LDd3yPwd4ZWs",
+        "gd-4SYqHo8M8v3rMJGxYshaOGb_KheKaCfuZKdDV4fo",
+        "mvOQAUYKPl3zilpNb480nhY7VS3wBJn46ntTrGFk_Nk"
+      ],
+      "_sd_alg": "sha-256",
+      "cnf": {
+        "alg": "HS256",
+        "k": "ZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1-f4CBgoM"
+      },
+      "country": "NL",
+      "exp": 1702592000,
+      "iat": 1700000000,
+      "iss": "https://issuer.example/age-service",
+      "sub": "holder-0001",
+      "vct": "urn:eudi:game:attestation:age-over-18"
+    },
+    "expected_disclosures": [
+      {
+        "segment": "WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd",
+        "digest": "zhurxLJSJKI_XNO-e_L644W0SwqsTD5LDd3yPwd4ZWs",
+        "claim_name": "age_over_18",
+        "claim_value": true
+      },
+      {
+        "segment": "WyJFQkVTRXhRVkZoY1lHUm9iSEIwZUh3IiwiYWdlX292ZXJfMjEiLGZhbHNlXQ",
+        "digest": "gd-4SYqHo8M8v3rMJGxYshaOGb_KheKaCfuZKdDV4fo",
+        "claim_name": "age_over_21",
+        "claim_value": false
+      },
+      {
+        "segment": "WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0",
+        "digest": "mvOQAUYKPl3zilpNb480nhY7VS3wBJn46ntTrGFk_Nk",
+        "claim_name": "display_name",
+        "claim_value": "Ada Lovelace"
+      }
+    ]
+  },
+  "verify_flow": {
+    "trust": {
+      "https://issuer.example/age-service": {
+        "alg": "HS256",
+        "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+      }
+    },
+    "request": {
+      "aud": "game-server-eu-1",
+      "nonce": "bm9uY2UtMDAwMQAAAAAA",
+      "vct": [
+        "urn:eudi:game:attestation:age-over-18"
+      ],
+      "claims": [
+        "age_over_18",
+        "display_name"
+      ],
+      "purpose": "Age-gate matchmaking",
+      "expires_at": 1700000060
+    },
+    "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+    "holder_key": {
+      "alg": "HS256",
+      "k": "ZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXp7fH1-f4CBgoM"
+    },
+    "now": 1700000015,
+    "expected": {
+      "ok": true,
+      "claims": {
+        "country": "NL",
+        "age_over_18": true,
+        "display_name": "Ada Lovelace"
+      },
+      "errors": []
+    }
+  },
+  "negative_cases": [
+    {
+      "name": "expired-credential",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18"
+        ]
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNjk5OTEzNjAwLCJpYXQiOjE2OTEzNjAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.PSBIp1BcZprbXsEzn633RCtTdsE-qnuSrpoOpL0Rr3s~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDAwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6InZTckNmVjI4dnlsdDRvaUpsdjRYUmxNei1fN0hYSVVFNjdjZmdNektIdWsifQ.Owizl-sPgYnOAufdEITG5TZPjVFFW35Gay5HoZIhu1c",
+      "now": 1700000000,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_EXPIRED"
+      ]
+    },
+    {
+      "name": "unknown-issuer",
+      "trust": {
+        "https://untrusted.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_ISSUER_UNKNOWN"
+      ]
+    },
+    {
+      "name": "tampered-issuer-signature",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryA~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_SIGNATURE_INVALID"
+      ]
+    },
+    {
+      "name": "rogue-disclosure",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~WyJQRDAtUDBCQlFrTkVSVVpIU0VsS1N3IiwiaXNfc3RhZmYiLHRydWVd~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_DISCLOSURE_UNKNOWN"
+      ]
+    },
+    {
+      "name": "audience-mismatch",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "someone-else",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_AUD_MISMATCH"
+      ]
+    },
+    {
+      "name": "nonce-mismatch",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMgAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_NONCE_MISMATCH"
+      ]
+    },
+    {
+      "name": "missing-claim",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name",
+          "age_over_21"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_CLAIM_MISSING"
+      ]
+    },
+    {
+      "name": "vct-not-allowed",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:guild-member"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_VCT_NOT_ALLOWED"
+      ]
+    },
+    {
+      "name": "replayed-nonce",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.W45uu2Stb6DmJkHikCCALdWsJZLKdQ81wz21WJDsKFQ",
+      "now": 1700000015,
+      "used_nonces": [
+        "https://issuer.example/age-service|bm9uY2UtMDAwMQAAAAAA"
+      ],
+      "expected_errors": [
+        "ERR_REPLAY"
+      ]
+    },
+    {
+      "name": "kb-missing",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_KB_MISSING"
+      ]
+    },
+    {
+      "name": "kb-wrong-key",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6IjFlZ3FtR0hjS1pYUjJmMnB4OHZJeVZfNnlfOHh1WlBMczNqcllYSFR0cVEifQ.QCXrwd7UYSNPCv4JgLw_0CxcP40G6wlCtID2nvA5d-c",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_KB_INVALID"
+      ]
+    },
+    {
+      "name": "sd-hash-mismatch",
+      "trust": {
+        "https://issuer.example/age-service": {
+          "alg": "HS256",
+          "k": "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8"
+        }
+      },
+      "request": {
+        "aud": "game-server-eu-1",
+        "nonce": "bm9uY2UtMDAwMQAAAAAA",
+        "vct": [
+          "urn:eudi:game:attestation:age-over-18"
+        ],
+        "claims": [
+          "age_over_18",
+          "display_name"
+        ],
+        "purpose": "Age-gate matchmaking",
+        "expires_at": 1700000060
+      },
+      "presentation": "eyJhbGciOiJIUzI1NiIsInR5cCI6Imd3K2p3dCJ9.eyJfc2QiOlsiemh1cnhMSlNKS0lfWE5PLWVfTDY0NFcwU3dxc1RENUxEZDN5UHdkNFpXcyIsImdkLTRTWXFIbzhNOHYzck1KR3hZc2hhT0diX0toZUthQ2Z1WktkRFY0Zm8iLCJtdk9RQVVZS1BsM3ppbHBOYjQ4MG5oWTdWUzN3QkpuNDZudFRyR0ZrX05rIl0sIl9zZF9hbGciOiJzaGEtMjU2IiwiY25mIjp7ImFsZyI6IkhTMjU2IiwiayI6IlpHVm1aMmhwYW10c2JXNXZjSEZ5YzNSMWRuZDRlWHA3ZkgxLWY0Q0Jnb00ifSwiY291bnRyeSI6Ik5MIiwiZXhwIjoxNzAyNTkyMDAwLCJpYXQiOjE3MDAwMDAwMDAsImlzcyI6Imh0dHBzOi8vaXNzdWVyLmV4YW1wbGUvYWdlLXNlcnZpY2UiLCJzdWIiOiJob2xkZXItMDAwMSIsInZjdCI6InVybjpldWRpOmdhbWU6YXR0ZXN0YXRpb246YWdlLW92ZXItMTgifQ.m-fZRL0jKJyTwCmKicYXf57Ux-mEbhKF9gcXXB7jryo~WyJBQUVDQXdRRkJnY0lDUW9MREEwT0R3IiwiYWdlX292ZXJfMTgiLHRydWVd~WyJJQ0VpSXlRbEppY29LU29yTEMwdUx3IiwiZGlzcGxheV9uYW1lIiwiQWRhIExvdmVsYWNlIl0~eyJhbGciOiJIUzI1NiIsInR5cCI6ImtiK2p3dCJ9.eyJhdWQiOiJnYW1lLXNlcnZlci1ldS0xIiwiaWF0IjoxNzAwMDAwMDEwLCJub25jZSI6ImJtOXVZMlV0TURBd01RQUFBQUFBIiwic2RfaGFzaCI6ImJtOTBMWFJvWlMxeWFXZG9kQzFvWVhObyJ9.jlDbMSnNUDXZwi3bUsuBWPbwXPuFePXHBrSfwtrmg3U",
+      "now": 1700000015,
+      "used_nonces": [],
+      "expected_errors": [
+        "ERR_SD_HASH_MISMATCH"
+      ]
+    }
+  ]
+}
