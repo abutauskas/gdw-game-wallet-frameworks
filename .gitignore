@@ -1,0 +1,4 @@
+# Build artifacts for the Game Digital Wallet javascript framework.
+
+javascript/node_modules/
+*.tgz
