@@ -1,5 +1,8 @@
 # Game Digital Wallet (GDW) — game-engine frameworks
 
+> **Landing page:** <https://abutauskas.github.io/gdw-game-wallet-frameworks/> —
+> a single, self-contained page in [`site/`](site/).
+
 A small, dependency-free **prototype** that adapts the EUDI Wallet Architecture
 and Reference Framework's selective-disclosure credential model (SD-JWT VC,
 ARF §5.4.3) to the needs of game developers. It ships the same token format and

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GDW — Game Digital Wallet frameworks</title>
+<meta name="description" content="An unofficial, community prototype that adapts selective-disclosure credentials to game engines. Seven language ports, one shared token format.">
+<meta name="robots" content="index, follow">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f4f6f8;
+    --surface-2: #eaeef2;
+    --ink: #14202b;
+    --ink-soft: #46535f;
+    --line: #d3dae0;
+    --accent: #1f5c73;
+    --accent-ink: #ffffff;
+    --code-bg: #10222e;
+    --code-ink: #d8e4ec;
+    --ok: #1f7a4d;
+    --warn-bg: #fff6e5;
+    --warn-line: #e3b567;
+    --warn-ink: #6b4a12;
+    --radius: 10px;
+    --maxw: 1080px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.6 "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+  /* Skip link */
+  .skip { position: absolute; left: -999px; top: 0; background: var(--accent); color: #fff; padding: 10px 14px; z-index: 50; }
+  .skip:focus { left: 12px; top: 12px; }
+
+  /* Unofficial banner */
+  .unofficial {
+    background: var(--warn-bg);
+    border-bottom: 1px solid var(--warn-line);
+    color: var(--warn-ink);
+    font-size: 14px;
+    padding: 10px 0;
+  }
+  .unofficial .wrap { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+  .unofficial strong { letter-spacing: .02em; }
+
+  /* Header */
+  header.site { border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 20; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+  .mark {
+    width: 38px; height: 38px; border-radius: 9px; flex: none;
+    background: var(--accent);
+    display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 15px;
+    letter-spacing: .04em;
+  }
+  .brand b { font-size: 17px; letter-spacing: .01em; }
+  .brand span { display: block; font-size: 12px; color: var(--ink-soft); font-weight: 400; }
+  nav.main { display: flex; gap: 22px; flex-wrap: wrap; }
+  nav.main a { color: var(--ink-soft); text-decoration: none; font-size: 15px; }
+  nav.main a:hover { color: var(--ink); }
+
+  /* Hero */
+  .hero { padding: 56px 0 40px; }
+  .hero h1 { font-size: clamp(30px, 4.4vw, 46px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -.01em; }
+  .hero p.lede { font-size: 19px; color: var(--ink-soft); max-width: 60ch; margin: 0 0 26px; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
+  .tag { font-size: 12.5px; background: var(--surface-2); color: var(--ink-soft); border-radius: 999px; padding: 4px 11px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; text-decoration: none; font-weight: 600; font-size: 15px;
+    padding: 11px 20px; border-radius: 8px; border: 1px solid var(--accent);
+  }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); }
+  .btn.ghost { background: transparent; color: var(--accent); }
+
+  /* Section rhythm */
+  section { padding: 44px 0; border-top: 1px solid var(--line); }
+  section h2 { font-size: 24px; margin: 0 0 8px; letter-spacing: -.005em; }
+  section p.sub { color: var(--ink-soft); margin: 0 0 24px; max-width: 70ch; }
+
+  /* Feature grid */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .card h3 { margin: 0 0 6px; font-size: 16px; }
+  .card p { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
+
+  /* Language table */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 14.5px; }
+  caption { text-align: left; padding: 12px 16px; color: var(--ink-soft); font-size: 13.5px; }
+  th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--line); }
+  thead th { background: var(--surface-2); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.pass { color: var(--ok); font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
+  code.inline { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: 13.5px; }
+
+  /* Code block */
+  pre {
+    background: var(--code-bg); color: var(--code-ink);
+    border-radius: var(--radius); padding: 18px 20px; overflow-x: auto;
+    font: 13.5px/1.6 "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    margin: 0;
+  }
+  pre .c { color: #7fa3b8; }
+
+  /* Steps */
+  ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+  ol.steps li { counter-increment: s; position: relative; padding-left: 46px; }
+  ol.steps li::before {
+    content: counter(s); position: absolute; left: 0; top: 0;
+    width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff;
+    display: grid; place-items: center; font-weight: 700; font-size: 14px;
+  }
+  ol.steps h3 { margin: 2px 0 6px; font-size: 16px; }
+  ol.steps p { margin: 0 0 8px; color: var(--ink-soft); font-size: 14.5px; }
+
+  /* Disclaimer block */
+  .notice { border-left: 4px solid var(--warn-line); background: var(--warn-bg); color: var(--warn-ink); padding: 16px 18px; border-radius: 0 var(--radius) var(--radius) 0; }
+  .notice h3 { margin: 0 0 6px; font-size: 15px; }
+  .notice p { margin: 0; font-size: 14px; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--line); background: var(--surface); padding: 30px 0; color: var(--ink-soft); font-size: 14px; }
+  footer .cols { display: flex; gap: 28px; justify-content: space-between; flex-wrap: wrap; }
+  footer a { color: var(--accent); }
+  footer .fine { margin-top: 18px; font-size: 13px; max-width: 80ch; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="unofficial" role="note">
+  <div class="wrap">
+    <strong>Unofficial community project.</strong>
+    <span>Not affiliated with, endorsed by, or operated by the European Union, any EU agency, or the EUDI Wallet programme. A prototype for learning and prototyping only.</span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap bar">
+    <a class="brand" href="#top">
+      <span class="mark" aria-hidden="true">GDW</span>
+      <span>
+        <b>Game Digital Wallet</b>
+        <span>frameworks — community prototype</span>
+      </span>
+    </a>
+    <nav class="main" aria-label="Primary">
+      <a href="#why">Why</a>
+      <a href="#languages">Languages</a>
+      <a href="#start">Get started</a>
+      <a href="#spec">Specification</a>
+      <a href="https://github.com/abutauskas/gdw-game-wallet-frameworks">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero wrap" id="top" style="border-top:0">
+    <div class="tags">
+      <span class="tag">Selective disclosure</span>
+      <span class="tag">SD-JWT VC&ndash;inspired</span>
+      <span class="tag">7 language ports</span>
+      <span class="tag">Zero runtime dependencies</span>
+      <span class="tag">Shared test vectors</span>
+    </div>
+    <h1>Prove only what a game needs to know.</h1>
+    <p class="lede">
+      GDW is a small, dependency-free toolkit that brings selective-disclosure
+      credentials to game developers. A player's credential is signed once, and a
+      game server can later ask for a single fact &mdash; &ldquo;over&nbsp;18&rdquo;,
+      &ldquo;owns the Season Pass&rdquo; &mdash; without learning anything else.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#start">Get started</a>
+      <a class="btn ghost" href="https://github.com/abutauskas/gdw-game-wallet-frameworks">View the source</a>
+    </div>
+  </section>
+
+  <section class="wrap" id="why">
+    <h2>What it is for</h2>
+    <p class="sub">The same audience&ndash;friendly model that a wallet uses for identity documents, adapted to the everyday needs of online games.</p>
+    <div class="grid">
+      <div class="card"><h3>Age gating &amp; matchmaking</h3><p>Prove &ldquo;over 18&rdquo; without revealing a birth date.</p></div>
+      <div class="card"><h3>Portable entitlements</h3><p>A season pass that works across titles and platforms, without a central account call on every launch.</p></div>
+      <div class="card"><h3>Guild membership &amp; rank</h3><p>Verifiable membership a third-party tournament server can trust.</p></div>
+      <div class="card"><h3>Tournament passes</h3><p>Time-boxed, non-transferable entry proofs bound to a device.</p></div>
+      <div class="card"><h3>Verified accounts</h3><p>Prove control of a platform identity, once.</p></div>
+      <div class="card"><h3>Parental consent</h3><p>Prove a guardian-consent claim is present and valid.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="languages">
+    <h2>Seven languages, one token format</h2>
+    <p class="sub">Every port replays the same cross-language test vectors. If all of them pass, the credentials are byte-for-byte identical &mdash; so a game client, a game server, and a backend can all speak it.</p>
+    <div class="table-scroll">
+      <table>
+        <caption>Conformance results, replayed from <code class="inline">test-vectors/vectors.json</code>.</caption>
+        <thead>
+          <tr><th scope="col">Language</th><th scope="col">Engine / runtime</th><th scope="col">Checks</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>C++17</td><td>Unreal Engine, C++ game servers</td><td class="pass">68 / 68</td></tr>
+          <tr><td>C# (.NET 10)</td><td>Unity, Godot (.NET), backend</td><td class="pass">70 / 70</td></tr>
+          <tr><td>GDScript</td><td>Godot 4.x (no native deps)</td><td class="pass">64 / 64</td></tr>
+          <tr><td>Rust</td><td>Bevy, game servers, <code class="inline">wasm32</code></td><td class="pass">58 / 58 <span style="color:var(--ink-soft);font-weight:400">(61 / 61 with ES256)</span></td></tr>
+          <tr><td>Python</td><td>Panda3D, PyGame, Ursina, servers</td><td class="pass">58 / 58 <span style="color:var(--ink-soft);font-weight:400">(61 / 61 with ES256)</span></td></tr>
+          <tr><td>Lua</td><td>Defold, L&Ouml;VE (LuaJIT), Lua 5.1+</td><td class="pass">55 / 55</td></tr>
+          <tr><td>JavaScript / TypeScript</td><td>Node, browser bundlers, PlayCanvas / Babylon / Three.js</td><td class="pass">61 / 61</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="wrap" id="start">
+    <h2>Get started in three steps</h2>
+    <p class="sub">The JavaScript / TypeScript port ships as an npm package; the others live in the repository.</p>
+    <ol class="steps">
+      <li>
+        <h3>Install</h3>
+        <p>No runtime dependencies. TypeScript declarations are included.</p>
+        <pre>npm install @arasbutauskas/gdw-game-wallet</pre>
+      </li>
+      <li>
+        <h3>Issue, present, verify</h3>
+        <p>An issuer signs a credential; a wallet reveals only what is asked for; a verifier checks it.</p>
+<pre><span class="c">// issue a credential with selective claims</span>
+const issuer   = new Issuer(issuerKey, 'https://issuer.example/age');
+const credential = issuer.issue({
+  vct: 'urn:eudi:game:attestation:age-over-18',
+  claims: { nickname: 'player42', age_over_18: true, country: 'LV' },
+  disclosable: ['nickname', 'age_over_18', 'country'],
+});
+
+<span class="c">// the wallet discloses a single claim</span>
+const wallet = new Wallet(holderKey);
+const presentation = wallet.present(credential, ['age_over_18']);
+
+<span class="c">// the verifier checks the presentation</span>
+const result = verifier.verify(presentation, { claims: { age_over_18: true } });
+<span class="c">// => { age_over_18: true }</span></pre>
+      </li>
+      <li>
+        <h3>Try the other ports</h3>
+        <p>Each language has its own folder, README, and test runner in the repository.</p>
+        <pre>git clone https://github.com/abutauskas/gdw-game-wallet-frameworks
+cd gdw-game-wallet-frameworks &amp;&amp; make test</pre>
+      </li>
+    </ol>
+  </section>
+
+  <section class="wrap" id="spec">
+    <h2>Specification &amp; test vectors</h2>
+    <p class="sub">The token format is defined in <code class="inline">SPEC.md</code>. The vectors are generated by <code class="inline">test-vectors/generate_vectors.py</code> &mdash; the executable form of the specification &mdash; and every framework must pass them byte-for-byte.</p>
+    <div class="cta">
+      <a class="btn ghost" href="https://github.com/abutauskas/gdw-game-wallet-frameworks/blob/main/SPEC.md">Read SPEC.md</a>
+      <a class="btn ghost" href="https://github.com/abutauskas/gdw-game-wallet-frameworks/tree/main/test-vectors">Browse the vectors</a>
+    </div>
+    <div class="notice" style="margin-top:24px">
+      <h3>Prototype, not a standard</h3>
+      <p>The default algorithm is HS256 (symmetric HMAC), which is only safe when the issuer and the verifier are the same trusted backend. This project is not an official EU specification and is not interoperable with production EUDI Wallets.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <strong>GDW — Game Digital Wallet frameworks</strong><br>
+        A community prototype for selective-disclosure credentials in games.
+      </div>
+      <div>
+        <a href="https://github.com/abutauskas/gdw-game-wallet-frameworks">Repository</a> &nbsp;&middot;&nbsp;
+        <a href="https://www.npmjs.com/package/@arasbutauskas/gdw-game-wallet">npm package</a> &nbsp;&middot;&nbsp;
+        <a href="https://github.com/abutauskas/gdw-game-wallet-frameworks/blob/main/SPEC.md">Specification</a>
+      </div>
+    </div>
+    <p class="fine">
+      This site and project are independent and are <strong>not</strong> affiliated with,
+      endorsed by, sponsored by, or operated by the European Union, the European Commission,
+      any EU agency, or the EUDI Wallet programme. &ldquo;European Union&rdquo; and EU emblems
+      are not used here in any way that implies an official connection. Prototype code only;
+      provided as-is, without warranty.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
