@@ -42,6 +42,8 @@ end
 
 local function load_vectors()
 	local candidates = {
+		"test-vectors/vectors.json",
+		here .. "/../test-vectors/vectors.json",
 		here .. "/../../test-vectors/vectors.json",
 		"./../test-vectors/vectors.json",
 		"../test-vectors/vectors.json",
