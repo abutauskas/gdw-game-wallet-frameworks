@@ -35,13 +35,13 @@ func _check_equal(actual: String, expected: String, label: String) -> void:
 
 
 func _load_vectors() -> Dictionary:
-	var project_dir := ProjectSettings.globalize_path("res://")
-	var path := project_dir.path_join("../test-vectors/vectors.json").simplify_path()
-	var f := FileAccess.open(path, FileAccess.READ)
-	if f == null:
-		push_error("cannot open vectors at " + path)
-		return {}
-	return JSON.parse_string(f.get_as_text())
+	for candidate in ["res://test-vectors/vectors.json", "res://../test-vectors/vectors.json"]:
+		var path := ProjectSettings.globalize_path(candidate).simplify_path()
+		var f := FileAccess.open(path, FileAccess.READ)
+		if f != null:
+			return JSON.parse_string(f.get_as_text())
+	push_error("cannot open vectors.json")
+	return {}
 
 
 func _init() -> void:
