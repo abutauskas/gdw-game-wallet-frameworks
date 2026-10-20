@@ -38,7 +38,7 @@
   }
   a { color: var(--accent); }
   a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-left: 20px; padding-right: 20px; }
 
   /* Skip link */
   .skip { position: absolute; left: -999px; top: 0; background: var(--accent); color: #fff; padding: 10px 14px; z-index: 50; }
@@ -57,7 +57,7 @@
 
   /* Header */
   header.site { border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 20; }
-  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 0; }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; }
   .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
   .mark { flex: none; height: 34px; width: auto; color: var(--accent); display: block; }
   .mark svg { display: block; height: 34px; width: auto; }
@@ -68,12 +68,12 @@
   nav.main a:hover { color: var(--ink); }
 
   /* Hero */
-  .hero { padding: 56px 0 40px; }
+  .hero { padding: 72px 0 56px; }
   .hero h1 { font-size: clamp(30px, 4.4vw, 46px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -.01em; }
   .hero p.lede { font-size: 19px; color: var(--ink-soft); max-width: 60ch; margin: 0 0 26px; }
   .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 28px; }
   .tag { font-size: 12.5px; background: var(--surface-2); color: var(--ink-soft); border-radius: 999px; padding: 4px 11px; }
-  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta { display: flex; gap: 12px; row-gap: 14px; flex-wrap: wrap; }
   .btn {
     display: inline-block; text-decoration: none; font-weight: 600; font-size: 15px;
     padding: 11px 20px; border-radius: 8px; border: 1px solid var(--accent);
@@ -82,9 +82,9 @@
   .btn.ghost { background: transparent; color: var(--accent); }
 
   /* Section rhythm */
-  section { padding: 44px 0; border-top: 1px solid var(--line); }
-  section h2 { font-size: 24px; margin: 0 0 8px; letter-spacing: -.005em; }
-  section p.sub { color: var(--ink-soft); margin: 0 0 24px; max-width: 70ch; }
+  section { padding: 68px 0; border-top: 1px solid var(--line); }
+  section h2 { font-size: 24px; margin: 0 0 12px; letter-spacing: -.005em; }
+  section p.sub { color: var(--ink-soft); margin: 0 0 30px; max-width: 70ch; }
 
   /* Feature grid */
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
@@ -112,15 +112,15 @@
   pre .c { color: #7fa3b8; }
 
   /* Steps */
-  ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+  ol.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 34px; }
   ol.steps li { counter-increment: s; position: relative; padding-left: 46px; }
   ol.steps li::before {
     content: counter(s); position: absolute; left: 0; top: 0;
     width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #fff;
     display: grid; place-items: center; font-weight: 700; font-size: 14px;
   }
-  ol.steps h3 { margin: 2px 0 6px; font-size: 16px; }
-  ol.steps p { margin: 0 0 8px; color: var(--ink-soft); font-size: 14.5px; }
+  ol.steps h3 { margin: 2px 0 8px; font-size: 16px; }
+  ol.steps p { margin: 0 0 14px; color: var(--ink-soft); font-size: 14.5px; }
 
   /* Disclaimer block */
   .notice { border-left: 4px solid var(--warn-line); background: var(--warn-bg); color: var(--warn-ink); padding: 16px 18px; border-radius: 0 var(--radius) var(--radius) 0; }
@@ -128,10 +128,10 @@
   .notice p { margin: 0; font-size: 14px; }
 
   /* Footer */
-  footer { border-top: 1px solid var(--line); background: var(--surface); padding: 30px 0; color: var(--ink-soft); font-size: 14px; }
+  footer { border-top: 1px solid var(--line); background: var(--surface); padding: 56px 0 64px; color: var(--ink-soft); font-size: 14px; }
   footer .cols { display: flex; gap: 28px; justify-content: space-between; flex-wrap: wrap; }
   footer a { color: var(--accent); }
-  footer .fine { margin-top: 18px; font-size: 13px; max-width: 80ch; }
+  footer .fine { margin: 32px 0 0; padding-top: 24px; border-top: 1px solid var(--line); font-size: 13px; max-width: 80ch; line-height: 1.7; }
 </style>
 </head>
 <body>
