@@ -17,7 +17,7 @@ enable_testing()
 add_executable(wallet_tests tests/test_wallet.cpp)
 target_link_libraries(wallet_tests PRIVATE eudi_game_wallet)
 add_test(NAME wallet_tests COMMAND wallet_tests
-         ${CMAKE_CURRENT_SOURCE_DIR}/../test-vectors/vectors.json)
+         ${CMAKE_CURRENT_SOURCE_DIR}/test-vectors/vectors.json)
 
 add_executable(basic_flow examples/basic_flow.cpp)
 target_link_libraries(basic_flow PRIVATE eudi_game_wallet)
