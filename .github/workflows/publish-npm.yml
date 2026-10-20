@@ -1,0 +1,36 @@
+name: Publish npm package
+
+on:
+  push:
+    tags:
+      - "js-v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: javascript
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Verify the package before publishing
+        run: |
+          node test/run_tests.js
+          node test/test_units.js
+          node examples/basic_flow.mjs
+
+      - name: Publish with provenance
+        run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
