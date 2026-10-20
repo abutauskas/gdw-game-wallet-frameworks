@@ -46,23 +46,30 @@ javascript/
 ## Install / use
 
 ```bash
-npm install        # dev-only: typescript + @types/node for typechecking
+npm install @arasbutauskas/gdw-game-wallet
+```
+
+To work on the source itself, install the dev-only tooling (`typescript` +
+`@types/node`, used for `npm run typecheck`):
+
+```bash
+npm install
 ```
 
 ```js
-const { GdwKey, Issuer, Wallet, Verifier, now } = require('@eudi/gdw-game-wallet');
+const { GdwKey, Issuer, Wallet, Verifier, now } = require('@arasbutauskas/gdw-game-wallet');
 ```
 
 TypeScript consumers get the same API via the shipped `types/index.d.ts`:
 
 ```ts
-import { GdwKey, Issuer, Verifier } from '@eudi/gdw-game-wallet';
+import { GdwKey, Issuer, Verifier } from '@arasbutauskas/gdw-game-wallet';
 ```
 
 ## Run the tests
 
 ```bash
-cd javascript
+cd javascript              # from the repository root
 node test/run_tests.js     # 61/61 (HS256 vectors + ES256 round trip)
 node test/test_units.js    # OK
 npm run typecheck          # tsc --noEmit

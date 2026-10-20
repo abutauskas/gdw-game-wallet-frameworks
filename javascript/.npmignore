@@ -1,0 +1,17 @@
+# Keep the published package limited to the declared `files` allowlist.
+# Anything here is a build artefact, editor/server sidecar, or dev-only file.
+**/*.uid
+**/*.godot
+.godot/
+node_modules/
+test/
+test-vectors/
+examples/*.uid
+tsconfig.json
+package-lock.json
+.npmignore
+.gitignore
+Makefile
+SPEC.md
+*.tgz
+*.log
