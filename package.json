@@ -1,6 +1,6 @@
 {
   "name": "@arasbutauskas/gdw-game-wallet",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Game Digital Wallet (GDW) reference framework - SD-JWT-style credentials for game engines and services. Byte-for-byte compatible with the C++, C#, GDScript, Rust, Python and Lua ports.",
   "keywords": [
     "eudi",
@@ -23,23 +23,37 @@
   "type": "commonjs",
   "main": "src/index.js",
   "types": "types/index.d.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
       "require": "./src/index.js",
       "default": "./src/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
-    "src",
-    "types",
-    "examples",
+    "src/index.js",
+    "src/errors.js",
+    "src/crypto.js",
+    "src/json.js",
+    "src/primitives.js",
+    "src/key.js",
+    "src/es256.js",
+    "src/core.js",
+    "types/index.d.ts",
+    "examples/basic_flow.mjs",
+    "examples/example.ts",
     "README.md"
   ],
   "scripts": {
     "test": "node test/run_tests.js && node test/test_units.js",
     "example": "node examples/basic_flow.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "engines": {
     "node": ">=18"
