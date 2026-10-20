@@ -34,7 +34,7 @@ void CheckEqual(string actual, string expected, string label)
     }
 }
 
-string path = args.Length > 0 ? args[0] : "../../../test-vectors/vectors.json";
+string path = args.Length > 0 ? args[0] : "test-vectors/vectors.json";
 GdwJson vectors = GdwJson.Parse(File.ReadAllText(path));
 
 // ---- canonical JSON -------------------------------------------------------
