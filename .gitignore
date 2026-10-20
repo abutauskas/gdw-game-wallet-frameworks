@@ -1,0 +1,4 @@
+# Build artifacts for the Game Digital Wallet python framework.
+
+__pycache__/
+*.pyc
