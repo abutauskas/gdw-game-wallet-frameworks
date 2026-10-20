@@ -6,6 +6,8 @@
 <title>GDW — Game Digital Wallet frameworks</title>
 <meta name="description" content="An unofficial, community prototype that adapts selective-disclosure credentials to game engines. Seven language ports, one shared token format.">
 <meta name="robots" content="index, follow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <style>
   :root {
     --bg: #ffffff;
@@ -57,12 +59,8 @@
   header.site { border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 20; }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 14px 0; }
   .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
-  .mark {
-    width: 38px; height: 38px; border-radius: 9px; flex: none;
-    background: var(--accent);
-    display: grid; place-items: center; color: #fff; font-weight: 700; font-size: 15px;
-    letter-spacing: .04em;
-  }
+  .mark { flex: none; height: 34px; width: auto; color: var(--accent); display: block; }
+  .mark svg { display: block; height: 34px; width: auto; }
   .brand b { font-size: 17px; letter-spacing: .01em; }
   .brand span { display: block; font-size: 12px; color: var(--ink-soft); font-weight: 400; }
   nav.main { display: flex; gap: 22px; flex-wrap: wrap; }
@@ -149,7 +147,19 @@
 <header class="site">
   <div class="wrap bar">
     <a class="brand" href="#top">
-      <span class="mark" aria-hidden="true">GDW</span>
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 104 40" role="img" aria-label="GDW">
+          <title>GDW</title>
+          <!-- a single "revealed" tile behind the mark: one fact surfaced from a set -->
+          <rect x="1" y="9" width="22" height="22" rx="5"
+                fill="none" stroke="currentColor" stroke-width="2.6" opacity="0.45" />
+          <rect x="4.5" y="12.5" width="22" height="22" rx="5"
+                fill="none" stroke="currentColor" stroke-width="2.6" />
+          <text x="36" y="28.5" font-family='"Segoe UI", system-ui, sans-serif'
+                font-size="21" font-weight="700" letter-spacing="1.5"
+                fill="currentColor">GDW</text>
+        </svg>
+      </span>
       <span>
         <b>Game Digital Wallet</b>
         <span>frameworks — community prototype</span>
