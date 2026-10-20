@@ -1,20 +1,16 @@
 # Convenience targets for the Game Digital Wallet (GDW) csharp framework.
-# See SPEC.md for the wire format and ../test-vectors for the shared vectors.
+# The language lives at this branch's root; SPEC.md and test-vectors/ are shared.
 #
 # SPDX-License-Identifier: CC-BY-4.0
 
-.PHONY: help test example clean
+.PHONY: help test clean
 
 help:
-	@echo "make test     run the csharp conformance suite"
-	@echo "make example  run the end-to-end csharp example"
-	@echo "make clean    remove build artifacts"
+	@echo "make test   run the csharp conformance suite"
+	@echo "make clean  remove local build artifacts"
 
 test:
-	cd csharp && dotnet run -c Release --project Tests/EudiGameWallet.Tests -- ../test-vectors/vectors.json
-
-example:
-	@echo "see the csharp README for the run command"
+	dotnet run -c Release --project Tests/EudiGameWallet.Tests -- test-vectors/vectors.json
 
 clean:
 	rm -rf build
