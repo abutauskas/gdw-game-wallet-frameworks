@@ -154,7 +154,7 @@ presentation bytes: 914
 verified: age_over_18 = true
 ```
 
-## Device camera support (why Roblox is the odd one out)
+## Device camera support by engine
 
 The GDW flow needs the *device* camera only for capturing a credential QR code
 or a proof-of-presence image — never for rendering a scene. That matters when
@@ -174,16 +174,14 @@ access is not:
 | Construct 3 | ✅ Full | Built-in **User Media** object (camera + mic, snapshot to Sprite/Tiled Background) on top of `getUserMedia`. |
 | GDevelop | ✅ Full | Web/`getUserMedia` based; camera used by face-capture / tracking extensions. |
 | PlayCanvas / Babylon.js / Three.js | ✅ Full | Web engines: `navigator.mediaDevices.getUserMedia` → a video texture (`Babylon.VideoTexture.CreateFromWebCam`, PlayCanvas video-texture tutorial, Three.js `VideoTexture`). |
-| Roblox (Luau) | ❌ Restricted | No general device-camera API for game code. `PlayerViewService:GetDeviceCameraCFrame` is **mobile-only** and only when the user opts in; webcam use is limited to avatar facial animation. Not usable for QR scanning. |
 
 **Consequence:** the credentials themselves are engine-agnostic (the same
 `test-vectors/vectors.json` vectors replay in C++, C# and GDScript), so a game
 server or backend can verify a presentation from *any* platform. Only the
-*capture* step — scanning a QR code — is camera-bound. On Roblox the capture
-half is unsupported today; a Roblox integration would have to receive an
-already-captured presentation (e.g. over `HttpService`) rather than scan it
-in-engine. See [`SPEC.md`](SPEC.md) for the wire format that makes this split
-possible.
+*capture* step — scanning a QR code — is camera-bound; an engine without device
+camera access would have to receive an already-captured presentation rather than
+scan it in-engine. See [`SPEC.md`](SPEC.md) for the wire format that makes this
+split possible.
 
 ## Read next
 
