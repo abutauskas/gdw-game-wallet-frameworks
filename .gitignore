@@ -24,3 +24,4 @@ lua/**/__pycache__/
 
 # JavaScript / TypeScript
 javascript/node_modules/
+*.tgz

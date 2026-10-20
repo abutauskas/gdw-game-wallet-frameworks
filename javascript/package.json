@@ -1,7 +1,7 @@
 {
-  "name": "@eudi/gdw-game-wallet",
+  "name": "@arasbutauskas/gdw-game-wallet",
   "version": "0.1.0",
-  "description": "Game Digital Wallet (GDW) reference framework — SD-JWT-style credentials for game engines and services. Byte-for-byte compatible with the C++, C#, GDScript, Rust, Python and Lua ports.",
+  "description": "Game Digital Wallet (GDW) reference framework - SD-JWT-style credentials for game engines and services. Byte-for-byte compatible with the C++, C#, GDScript, Rust, Python and Lua ports.",
   "keywords": [
     "eudi",
     "gdw",
@@ -24,6 +24,7 @@
   "files": [
     "src",
     "types",
+    "examples",
     "README.md"
   ],
   "scripts": {

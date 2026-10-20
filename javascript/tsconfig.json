@@ -10,5 +10,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["types/**/*.ts"]
+  "include": ["types/**/*.ts", "examples/**/*.ts"]
 }

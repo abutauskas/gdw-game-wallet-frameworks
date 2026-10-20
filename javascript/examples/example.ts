@@ -15,7 +15,7 @@ import {
   now,
   type VerifyResult,
   type JsonValue,
-} from './index.js';
+} from '../types/index.js';
 
 function main(): number {
   const issuerKey: GdwKey = GdwKey.hs256('issuer-shared-secret-used-only-for-this-demo');
