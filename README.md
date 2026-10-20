@@ -19,10 +19,10 @@ javascript/
     es256.js         optional ES256 (ECDSA P-256) via node:crypto
     core.js          decode/parse + Issuer + Wallet + Verifier
   types/index.d.ts   TypeScript declarations for the public API
-  types/example.ts   a fully-typed flow, checked by `npm run typecheck`
   test/run_tests.js  conformance runner (replays the shared vectors)
   test/test_units.js small primitive unit tests
-  examples/basic_flow.mjs
+  examples/basic_flow.mjs   runnable Node example
+  examples/example.ts       fully-typed flow, checked by `npm run typecheck`
   package.json
 ```
 
