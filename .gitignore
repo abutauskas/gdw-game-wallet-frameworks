@@ -1,0 +1,4 @@
+# Build artifacts for the Game Digital Wallet csharp framework.
+
+csharp/**/bin
+csharp/**/obj
